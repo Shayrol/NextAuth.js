@@ -17,7 +17,11 @@ export async function POST(request: Request) {
     },
   });
 
+  // user가 존재한지 확인을 하고
+  // body.password로 사용자가 입력한 pw와 user.password로 저장된 pw를 비교한다.
+  // 여기서 bcrypt.compare를 통해 암호화된 비밀번호를 비교한다.
   if (user && (await bcrypt.compare(body.password, user.password))) {
+    // 구조분해 할당으로 password 제외 user 값을 userWithoutPass에 할당
     const { password, ...userWithoutPass } = user;
     return new Response(JSON.stringify(userWithoutPass));
   } else return new Response(JSON.stringify(null));
