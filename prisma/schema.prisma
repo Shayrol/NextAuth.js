@@ -1,6 +1,11 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// 해당 prisma를 통해 테이블 형식으로 손쉽게 CRUD 할 수 있다.
+// 여기서는 테이블, 쿼리 추가를 할 수 있다.
+// yarn prisma studio를 통해 접속가능
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,6 +15,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// 회원가입을 통한 유저 정보 테이블
 model User {
   id       Int     @id @default(autoincrement())
   email    String  @unique
@@ -18,6 +24,7 @@ model User {
   posts    Post[]
 }
 
+// 게시물 테이블
 model Post {
   id        Int     @id @default(autoincrement())
   title     String

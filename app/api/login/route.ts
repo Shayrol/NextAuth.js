@@ -1,5 +1,6 @@
 // 로그인 API
 
+import { signJwtAccessToken } from "@/app/lib/jwt";
 import prisma from "@/app/lib/prisma";
 import * as bcrypt from "bcrypt";
 
@@ -11,6 +12,7 @@ interface RequestBody {
 export async function POST(request: Request) {
   const body: RequestBody = await request.json();
 
+  // prisma DB에 user가 있는지 확인
   const user = await prisma.user.findFirst({
     where: {
       email: body.username,
@@ -23,7 +25,17 @@ export async function POST(request: Request) {
   if (user && (await bcrypt.compare(body.password, user.password))) {
     // 구조분해 할당으로 password 제외 user 값을 userWithoutPass에 할당
     const { password, ...userWithoutPass } = user;
-    return new Response(JSON.stringify(userWithoutPass));
+
+    // accessToken 추가
+    // pw을 제외한 user 정보를 jwt 발급 함수를 통해 받아오고
+    // 새로운 객체 result에 accessToken을 포함한 값을 반환한다.
+    const accessToken = signJwtAccessToken(userWithoutPass);
+    const result = {
+      ...userWithoutPass,
+      accessToken,
+    };
+
+    return new Response(JSON.stringify(result));
   } else return new Response(JSON.stringify(null));
 }
 

@@ -1,17 +1,3 @@
-// import NextAuth from "next-auth";
-// import Github from "next-auth/providers/github";
-
-// export const authOptions = {
-//   providers: [
-//     Github({
-//       clientId: process.env.GITHUB_ID ?? "",
-//       clientSecret: process.env.GITHUB_SECRET ?? "",
-//     }),
-//   ],
-// };
-
-// export default NextAuth(authOptions);
-
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -54,6 +40,22 @@ const handler = NextAuth({
     //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     // }),
   ],
+
+  // 🎈 accessToken Session에서 과리하기 위함
+  callbacks: {
+    // jwt에서 user 정보(accessToken 포함)가 token으로 덮어씌우게 된다. 여기서 user는 undefined
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    // 이후 jwt의 token이 인자로 들어가고 해당 session은 sessionStorage에 저장된 값 들고옴
+    // 즉 session.user.accessToken으로 전역으로 토큰을 사용할 수 있다.
+    // 토큰 사용은 const { data: session } = useSession(); 통해서 가져올 수 있다.
+    async session({ session, token }) {
+      session.user = token as any;
+      return session;
+    },
+  },
+
   // 커스텀 로그인 페이지 url으로 이동시 추가
   // pages: {
   //   signIn: "/custom-login", // 커스텀 로그인 페이지 경로
