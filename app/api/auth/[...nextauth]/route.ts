@@ -1,5 +1,6 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import Kakao from "next-auth/providers/kakao";
 
 const handler = NextAuth({
   providers: [
@@ -34,6 +35,11 @@ const handler = NextAuth({
         }
       },
     }),
+    // Kakao
+    Kakao({
+      clientId: process.env.KAKAO_CLIENT_ID!,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+    }),
     // Google 로그인 추가 시 아래 Provider 추가
     // GoogleProvider({
     //   clientId: process.env.GOOGLE_CLIENT_ID,
@@ -57,9 +63,9 @@ const handler = NextAuth({
   },
 
   // 커스텀 로그인 페이지 url으로 이동시 추가
-  // pages: {
-  //   signIn: "/custom-login", // 커스텀 로그인 페이지 경로
-  // },
+  pages: {
+    signIn: "/signin", // 커스텀 로그인 페이지 경로
+  },
 });
 
 export { handler as GET, handler as POST };
