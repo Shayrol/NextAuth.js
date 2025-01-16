@@ -1,9 +1,20 @@
 "use client";
+import { Session } from "next-auth";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
 
-function SignInButton() {
-  const { data: session } = useSession();
+interface ISessionProps {
+  session: Session | null;
+}
+
+function SignInButton({ session }: ISessionProps) {
+  // const { data: session, status } = useSession();
+
+  // console.log("session: ", session);
+
+  // if (status === "loading") {
+  //   return <div>loading...</div>;
+  // }
 
   if (session && session.user) {
     return (

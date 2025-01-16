@@ -1,8 +1,9 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import Kakao from "next-auth/providers/kakao";
+import Naver from "next-auth/providers/naver";
 
-const handler = NextAuth({
+export const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -40,8 +41,13 @@ const handler = NextAuth({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
     }),
-    // Google 로그인 추가 시 아래 Provider 추가
-    // GoogleProvider({
+    // Naver
+    Naver({
+      clientId: process.env.NAVER_CLIENT_ID!,
+      clientSecret: process.env.NAVER_CLIENT_SECRET!,
+    }),
+    // Google
+    // Google({
     //   clientId: process.env.GOOGLE_CLIENT_ID,
     //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     // }),
