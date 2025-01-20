@@ -43,3 +43,45 @@ const session: Session | null = await getServerSession(handler);
 ssr로 데이터를 가져와 클라이언트 컴포넌트에 Props로 넘겨준다. <br>
 layout 헤더에 사용하려면 layout.tsx에 똑같이 해주면 된다. <br>
 
+25.01.20 <br>
+메인페이지 변경 <br>
+
+>이미지 <br>
+
+![nextAuth01](https://github.com/user-attachments/assets/1666dacc-8f0c-41c9-be5f-cb85ab4085e4) <br>
+![nextAuth02](https://github.com/user-attachments/assets/7f390c1f-c721-444c-9a54-11b4353be669) <br>
+
+
+>app/page.tsx - 메인 페이지 <br>
+
+```bash
+import { getServerSession, Session } from "next-auth";
+import PostButton from "./components/PostsRouterButton";
+import SignInButton from "./components/SignInButton";
+import { handler } from "./api/auth/[...nextauth]/route";
+
+export default async function Home() {
+  // 서버 컴포넌트 이므로 getServerSession() 함수를 통해 ssr 요청으로 로그인 정보를 불러온다.
+  const session: Session | null = await getServerSession(handler);
+
+  console.log("Home session: ", session);
+  return (
+    <main className="w-full h-screen flex flex-col justify-center items-center">
+      <div className="border p-4 flex flex-col justify-between w-full max-w-[900px] h-screen">
+        <h1 className="font-semibold">
+          {session?.user?.name
+            ? `${session.user.name}님 환영합니다.`
+            : "로그인 필요합니다."}
+        </h1>
+        <PostButton />
+        <div className="flex justify-center">
+          <SignInButton session={session} />
+        </div>
+      </div>
+    </main>
+  );
+}
+```
+
+
+
