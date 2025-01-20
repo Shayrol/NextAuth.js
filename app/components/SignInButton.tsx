@@ -7,7 +7,9 @@ interface ISessionProps {
   session: Session | null;
 }
 
+// 해당 session은 ssr로 받아와 가져온 값
 function SignInButton({ session }: ISessionProps) {
+  // 아래 useSession()은 csr로 session 정보를 불러올 때 사용
   // const { data: session, status } = useSession();
 
   // console.log("session: ", session);
@@ -19,20 +21,20 @@ function SignInButton({ session }: ISessionProps) {
   if (session && session.user) {
     return (
       <button
-        className="px-12 py-4 border rounded-xl bg-red-300"
+        className="py-1 max-w-[300px] w-full border rounded-xl bg-red-300 text-[12px]"
         onClick={() => signOut()}
       >
-        {session.user.name}님 Log Out
+        {session.user.name}님 로그아웃
       </button>
     );
   }
 
   return (
     <button
-      className="px-12 py-4 border rounded-xl bg-yellow-300"
+      className="py-1 max-w-[300px] w-full border rounded-xl bg-yellow-300 text-[12px]"
       onClick={() => signIn()}
     >
-      LogIn
+      로그인
     </button>
   );
 }

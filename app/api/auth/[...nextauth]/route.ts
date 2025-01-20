@@ -2,6 +2,8 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import Kakao from "next-auth/providers/kakao";
 import Naver from "next-auth/providers/naver";
+// import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "@/app/lib/prisma";
 
 export const handler = NextAuth({
   providers: [
@@ -27,7 +29,6 @@ export const handler = NextAuth({
           }),
         });
         const user = await res.json();
-        console.log(user);
 
         if (user) {
           return user;
@@ -67,8 +68,48 @@ export const handler = NextAuth({
       return session;
     },
   },
+  // 🎈 User 정보를 확인하여 없으면 추가 있으면 넘어감
+  //    하지만 소셜 로그인에 이메일을 제공하지 않으면 로그인이 되지 않음
+  // callbacks: {
+  //   // JWT 콜백
+  //   async jwt({ token, user }) {
+  //     // 로그인한 유저가 처음이면 DB에 저장
+  //     if (user) {
+  //       const existingUser = await prisma.user.findUnique({
+  //         where: {
+  //           email: user.email!,
+  //         },
+  //       });
 
-  // 커스텀 로그인 페이지 url으로 이동시 추가
+  //       if (!existingUser) {
+  //         // 새 유저이면 DB에 저장
+  //         await prisma.user.create({
+  //           data: {
+  //             email: user.email!,
+  //             name: user.name!,
+  //             password: "", // 비밀번호는 소셜 로그인일 경우 빈값
+  //           },
+  //         });
+  //       }
+  //     }
+
+  //     // JWT 토큰에 사용자 정보 추가
+  //     return { ...token, ...user };
+  //   },
+
+  //   // 세션 콜백
+  //   async session({ session, token }) {
+  //     session.user = token as any; // 세션에 토큰 정보 저장
+  //     return session;
+  //   },
+  // },
+
+  // // 세션 옵션
+  // session: {
+  //   strategy: "jwt", // JWT 방식으로 세션 관리
+  // },
+
+  // 커스텀 로그인 페이지 url으로 이동시 추가 or 로그인 필요 페이지 접속 시 이동
   pages: {
     signIn: "/signin", // 커스텀 로그인 페이지 경로
   },

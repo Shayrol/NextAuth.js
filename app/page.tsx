@@ -9,10 +9,18 @@ export default async function Home() {
 
   console.log("Home session: ", session);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-semibold">NextAuth Tutorial</h1>
-      <PostButton />
-      <SignInButton session={session} />
+    <main className="w-full h-screen flex flex-col justify-center items-center">
+      <div className="border p-4 flex flex-col justify-between w-full max-w-[900px] h-screen">
+        <h1 className="font-semibold">
+          {session?.user?.name
+            ? `${session.user.name}님 환영합니다.`
+            : "로그인 필요합니다."}
+        </h1>
+        <PostButton />
+        <div className="flex justify-center">
+          <SignInButton session={session} />
+        </div>
+      </div>
     </main>
   );
 }

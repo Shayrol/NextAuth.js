@@ -33,3 +33,10 @@ model Post {
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
 }
+
+// 소셜 로그인 포함 유저들
+model AllUser {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+}
