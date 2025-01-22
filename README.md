@@ -144,7 +144,7 @@ const refreshAccessToken = async () => {
 refreshToken()함수 호출 후 401 반환하면 로그아웃 함수를 호출 한다. <br>
 
 # GoogleProvider 기준
-1. 과정을 동일한데 소셜 토큰을 전달 후 서버에서 생성된 accessToken과 refreshToken을 받는다.
+1. 과정은 동일한데 소셜 토큰을 전달 후 서버에서 생성된 accessToken과 refreshToken을 받는다.
 ```bash
 GoogleProvider({
   clientId: process.env.GOOGLE_ID,
