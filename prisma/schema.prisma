@@ -1,9 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// 해당 prisma를 통해 테이블 형식으로 손쉽게 CRUD 할 수 있다.
-// 여기서는 테이블, 쿼리 추가를 할 수 있다.
-// yarn prisma studio를 통해 접속가능
+// 수정을 했다면 다음과 같이 실행한다.
+// yarn prisma migrate dev --name add_provider_fields
 
 
 generator client {
@@ -15,28 +11,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 회원가입을 통한 유저 정보 테이블
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String
-  posts    Post[]
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  name        String?
+  password    String?
+  posts       Post[]
+  provider    String?  
+  providerId  String?  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 }
 
-// 게시물 테이블
+
+
 model Post {
   id        Int     @id @default(autoincrement())
   title     String
   content   String?
   published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
-}
-
-// 소셜 로그인 포함 유저들
-model AllUser {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
+  author    User    @relation(fields: [authorId], references: [id])
 }
